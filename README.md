@@ -39,3 +39,10 @@ jwt的库修改（原来的库已经不再维护了）
 import "github.com/golang-jwt/jwt"
 ```
 
+
+
+
+
+### 修改3
+
+删除normal.go，将对应的中间件放入AuthMiddlerware里面
