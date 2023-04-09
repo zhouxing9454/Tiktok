@@ -11,7 +11,7 @@ var (
 )
 
 func InitMySQL() (err error) {
-	dsn := "root:zx045498ZX@(127.0.0.1:3306)/tiktok?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:XXX@(127.0.0.1:3306)/tiktok?charset=utf8mb4&parseTime=True&loc=Local"
 	DB, err = gorm.Open("mysql", dsn)
 	if err != nil {
 		return

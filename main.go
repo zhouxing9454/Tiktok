@@ -30,5 +30,5 @@ func main() {
 	}
 
 	r := router.InitRouter()
-	r.Run("192.168.1.160:8080")
+	r.Run()
 }
