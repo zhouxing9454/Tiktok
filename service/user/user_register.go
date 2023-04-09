@@ -21,8 +21,8 @@ func UserRegister(name string, password string) (*LoginAndRegisterResponse, int,
 	var user repository.User
 	user.Username = name
 	user.Password = password
-	user.Avatar = "https://octodex.github.com/images/Fintechtocat.png"
-	user.BackgroundImage = "https://cdn.pixabay.com/photo/2023/01/23/09/26/cat-7738210_960_720.jpg"
+	user.Avatar = "https://blog-1314857283.cos.ap-shanghai.myqcloud.com/background-img/avatar.jpg"
+	user.BackgroundImage = "https://blog-1314857283.cos.ap-shanghai.myqcloud.com/images/202304071526669.jpg"
 	user.Signature = "Talk is cheap,show me the code!"
 
 	// 密码加密

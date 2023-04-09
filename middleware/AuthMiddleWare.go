@@ -1,13 +1,12 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 
-	"TikTok_Project/repository"
 	"TikTok_Project/utils"
 )
 
@@ -28,8 +27,8 @@ func JWTMiddleWare() gin.HandlerFunc {
 		tokenStruck, ok := utils.ParseToken(tokenStr)
 		if !ok {
 			c.JSON(http.StatusOK, gin.H{
-				"status_code": 5, 
-				"status_msg": "token不正确",
+				"status_code": 5,
+				"status_msg":  "token不正确",
 			})
 			c.Abort() //阻止执行
 			return
@@ -37,8 +36,8 @@ func JWTMiddleWare() gin.HandlerFunc {
 		//token超时
 		if time.Now().Unix() > tokenStruck.ExpiresAt {
 			c.JSON(http.StatusOK, gin.H{
-				"status_code": 5, 
-				"status_msg": "token过期",
+				"status_code": 5,
+				"status_msg":  "token过期",
 			})
 			c.Abort() //阻止执行
 			return
@@ -48,36 +47,31 @@ func JWTMiddleWare() gin.HandlerFunc {
 	}
 }
 
-
-// RateMiddleware 中间件
-func RateMiddleware(c *gin.Context) {
-	//以Pipeline的方式操作事务
-	pipe := repository.RDB.TxPipeline()
-
-	// 5 秒刷新key为IP(c.ClientIP())的r值为0
-	err := pipe.SetNX(repository.CTX, c.ClientIP(), 0, 10 * time.Second).Err()
-	if err != nil {
-		log.Printf("redis刷新错误" + err.Error())
-	}
-	// 每次访问，这个IP的对应的值加一
-	pipe.Incr(repository.CTX, c.ClientIP())
-	// 提交事务
-	_, _ = pipe.Exec(repository.CTX)
-
-	// 获取IP访问的次数
-	var val int
-	val, err = repository.RDB.Get(repository.CTX, c.ClientIP()).Int()
-	if err != nil {
-		log.Printf("redis刷新错误" + err.Error())
-	}
-	// 如果10秒内大于50次
-	if val > 50 {
-		c.Abort()
-		c.JSON(http.StatusOK, gin.H{
-			"status_code" : -1,
-			"status_msg" : "访问过于频繁",
-		})
-	} else {
-		c.Next()
+func NoAuthToGetUserId() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		rawId := ctx.Query("user_id")
+		if rawId == "" {
+			rawId = ctx.PostForm("user_id")
+		}
+		//用户不存在
+		if rawId == "" {
+			ctx.JSON(http.StatusOK, gin.H{
+				"statuscode": 401,
+				"statusmsg":  "用户不存在",
+			})
+			ctx.Abort() //阻止执行
+			return
+		}
+		userId, err := strconv.ParseInt(rawId, 10, 64)
+		if err != nil {
+			ctx.JSON(http.StatusOK, gin.H{
+				"statuscode": 401,
+				"statusmsg":  "用户不存在",
+			})
+			ctx.Abort() //阻止执行
+			return
+		}
+		ctx.Set("user_id", userId)
+		ctx.Next()
 	}
 }

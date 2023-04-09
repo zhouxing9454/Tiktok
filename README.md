@@ -9,6 +9,24 @@
 
 将sha-1改为sha-256算法，加盐值，盐值和password一起存入数据库。
 
+```Go
+func HashPassword(password string, salt string) string {
+	hasher := sha256.New()
+	hasher.Write([]byte(password + salt))
+	hash := hasher.Sum(nil)
+	return hex.EncodeToString(hash)
+}
+
+func GenerateSalt(length int) string {
+	salt := make([]byte, length)
+	_, err := rand.Read(salt)
+	if err != nil {
+		panic(err)
+	}
+	return base64.StdEncoding.EncodeToString(salt)
+}
+```
+
 
 
 
@@ -16,3 +34,8 @@
 ### 修改2
 
 jwt的库修改（原来的库已经不再维护了）
+
+```go
+import "github.com/golang-jwt/jwt"
+```
+
