@@ -4,17 +4,18 @@ import (
 	"TikTok_Project/repository"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 )
 
 var mySignKey = []byte("bjxf.douyin")
 
-type Claims struct{
+type Claims struct {
 	UserId int64
 	jwt.StandardClaims
 }
+
 // 获取 token
-func GenToken(user repository.User) (string, error){
+func GenToken(user repository.User) (string, error) {
 	expirationTime := time.Now().Add(7 * 24 * time.Hour)
 	claims := &Claims{
 		UserId: user.ID,
@@ -34,6 +35,7 @@ func GenToken(user repository.User) (string, error){
 
 	return tokenstring, nil
 }
+
 // 解析 token
 func ParseToken(tokenString string) (*Claims, bool) {
 	token, _ := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {

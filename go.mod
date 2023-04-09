@@ -2,7 +2,10 @@ module TikTok_Project
 
 go 1.19
 
-require github.com/gin-gonic/gin v1.8.2
+require (
+	github.com/gin-gonic/gin v1.8.2
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+)
 
 require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -12,7 +15,6 @@ require (
 )
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dlclark/regexp2 v1.8.0
 	github.com/feiin/sensitivewords v0.0.0-20210619095523-fb3a44e7e3d0
 	github.com/gin-contrib/sse v0.1.0 // indirect
