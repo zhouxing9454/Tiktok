@@ -46,3 +46,13 @@ import "github.com/golang-jwt/jwt"
 ### 修改3
 
 删除normal.go，将对应的中间件放入AuthMiddlerware里面
+
+
+
+
+
+### 修改4
+
+优雅地重启或停止web服务器，参考gin的官方文档写的：
+
+- 启动了一个 goroutine，用于监听和处理客户端请求。如果在监听过程中出现错误，且该错误不是 `http.ErrServerClosed`，则会使用 `log.Fatalf` 记录错误信息并退出程序。接着，代码使用 `signal` 包等待中断信号。一旦接收到中断信号，代码会优雅地关闭服务器，首先使用 `context` 包创建一个超时为 5 秒的上下文，然后调用 `srv.Shutdown` 方法，等待服务器处理完尚未处理完的请求并关闭服务器。最后，程序记录一条日志消息表明服务器已关闭，并退出程序。
