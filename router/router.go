@@ -19,7 +19,9 @@ func InitRouter() *gin.Engine {
 	// 视频及截图存放位置
 	r.Static("static", "./static")
 
-	uGroup := r.Group("douyin", middleware.RateMiddleware)
+	uGroup := r.Group("douyin")
+	tb := middleware.NewTokenBucket(5, 1) // 每秒最多允许 5 次请求
+	uGroup.Use(middleware.LimiterMiddleware(tb))
 	{
 		// 基础接口
 		uGroup.GET("/feed/", feed.FeedVideoListHandler)
