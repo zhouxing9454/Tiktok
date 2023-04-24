@@ -20,7 +20,7 @@ func InitRouter() *gin.Engine {
 	r.Static("static", "./static")
 
 	uGroup := r.Group("douyin")
-	tb := middleware.NewTokenBucket(15, 1) // 每秒最多允许 5 次请求
+	tb := middleware.NewTokenBucket(15, 1) // 每秒最多允许 15 次请求
 	uGroup.Use(middleware.LimiterMiddleware(tb))
 	{
 		// 基础接口
