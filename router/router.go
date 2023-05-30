@@ -17,7 +17,8 @@ func InitRouter() *gin.Engine {
 	r := gin.Default()
 
 	// 视频及截图存放位置
-	r.Static("static", "./static")
+	//更改成容器里面的static路径
+	r.Static("static", "/app/server/static/")
 
 	uGroup := r.Group("douyin")
 	tb := middleware.NewTokenBucket(15, 1) // 每秒最多允许 15 次请求

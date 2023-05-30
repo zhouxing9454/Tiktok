@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	defaultIP   = ""
-	defaultPort = 8080
+	defaultIP   = "192.168.177.122" //这里是要修改的
+	defaultPort = 8000
 )
 
 // NewFileName 根据UserID+雪花算法生成的id连接成videoName

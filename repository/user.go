@@ -30,7 +30,7 @@ type User struct {
 	Comments        []*Comment `json:"-"`                                                                            //用户与评论的一对多
 }
 
-// 单例模式
+// UserDAO 单例模式
 type UserDAO struct {
 }
 
@@ -46,7 +46,7 @@ func InitUserDao() *UserDAO {
 	return userDao
 }
 
-// register
+// IsExistName register
 func (u *UserDAO) IsExistName(name string) bool {
 	var user User
 	DB.Find(&user, "username = ?", name)
@@ -58,14 +58,14 @@ func (u *UserDAO) UserRegister(user *User) error {
 	return err
 }
 
-// login
+// UserLoginVerify login
 func (u *UserDAO) UserLoginVerify(name string, password string, user *User) bool {
 	DB.First(&user, "username = ? and password = ?", name, password)
 
 	return user.ID == 0
 }
 
-// UserInfo
+// UserInfoById UserInfo
 func (u *UserDAO) UserInfoById(userId int64, user *User) error {
 	if user == nil {
 		return errors.New("空指针错误")
@@ -79,7 +79,7 @@ func (u *UserDAO) UserInfoById(userId int64, user *User) error {
 	return nil
 }
 
-// 用户是否存在
+// IsExistUserId 用户是否存在
 func (u *UserDAO) IsExistUserId(userid int64) bool {
 	var userinfo User
 	if err := DB.Where("id=?", userid).Select("id").First(&userinfo).Error; err != nil {

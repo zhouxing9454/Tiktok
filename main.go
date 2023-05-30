@@ -36,7 +36,7 @@ func main() {
 
 	r := router.InitRouter()
 	srv := &http.Server{
-		Addr:    "IP:PORT",
+		Addr:    ":8000", //自定义
 		Handler: r,
 	}
 	go func() {
