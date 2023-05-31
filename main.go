@@ -9,30 +9,22 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"sync"
 	"time"
 )
 
 func main() {
-	err := repository.InitMySQL()
-	if err != nil {
-		panic(err)
-	}
+	wg := &sync.WaitGroup{}
+	wg.Add(3)
+	configInit(wg)
+	wg.Wait()
+
 	defer func() {
 		err := repository.Close()
 		if err != nil {
 			log.Println("can't close current db！")
 		}
 	}()
-	repository.ModelAutoMigrate()
-
-	if err := repository.InitRedisClient(); err != nil {
-		panic(err)
-	}
-
-	if err := utils.SensitiveWordInit(); err != nil {
-		log.Printf("敏感词初始化失败")
-		panic(err)
-	}
 
 	r := router.InitRouter()
 	srv := &http.Server{
@@ -58,4 +50,30 @@ func main() {
 		log.Fatal("Server Shutdown:", err)
 	}
 	log.Println("Server exiting")
+}
+
+func configInit(wg *sync.WaitGroup) {
+	go func() {
+		defer wg.Done()
+		err := repository.InitMySQL()
+		if err != nil {
+			panic(err)
+		}
+		repository.ModelAutoMigrate()
+
+	}()
+	go func() {
+		defer wg.Done()
+		if err := repository.InitRedisClient(); err != nil {
+			panic(err)
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		if err := utils.SensitiveWordInit(); err != nil {
+			log.Printf("敏感词初始化失败")
+			panic(err)
+		}
+	}()
 }
