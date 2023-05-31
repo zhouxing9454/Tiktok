@@ -186,3 +186,54 @@ RUN apk add --no-cache ffmpeg
 CMD ["./webserver"]
 ```
 
+
+
+
+
+### 修改7
+
+使用waitgroup，并发初始化mysql,redis,敏感词。
+
+```go
+func main() {
+	wg := &sync.WaitGroup{}
+	wg.Add(3)
+	configInit(wg)
+	wg.Wait()
+
+	defer func() {
+		err := repository.Close()
+		if err != nil {
+			log.Println("can't close current db！")
+		}
+	}()
+	......
+}
+
+func configInit(wg *sync.WaitGroup) {
+	go func() {
+		defer wg.Done()
+		err := repository.InitMySQL()
+		if err != nil {
+			panic(err)
+		}
+		repository.ModelAutoMigrate()
+
+	}()
+	go func() {
+		defer wg.Done()
+		if err := repository.InitRedisClient(); err != nil {
+			panic(err)
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		if err := utils.SensitiveWordInit(); err != nil {
+			log.Printf("敏感词初始化失败")
+			panic(err)
+		}
+	}()
+}
+```
+
