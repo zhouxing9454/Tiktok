@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"ByteRhythm/idl/video/videoPb"
+	"Tiktok/idl/video/videoPb"
 	"context"
 )
 

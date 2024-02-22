@@ -1,7 +1,7 @@
 package util
 
 import (
-	"ByteRhythm/model"
+	"Tiktok/model"
 	"fmt"
 	"log"
 	"time"

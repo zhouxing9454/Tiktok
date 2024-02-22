@@ -1,10 +1,10 @@
 package service
 
 import (
-	"ByteRhythm/app/message/dao"
-	"ByteRhythm/idl/message/messagePb"
-	"ByteRhythm/model"
-	"ByteRhythm/util"
+	"Tiktok/app/message/dao"
+	"Tiktok/idl/message/messagePb"
+	"Tiktok/model"
+	"Tiktok/util"
 	"context"
 	"encoding/json"
 	"strconv"

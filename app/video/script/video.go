@@ -1,10 +1,10 @@
 package script
 
 import (
-	"ByteRhythm/app/video/service"
-	"ByteRhythm/consts"
-	"ByteRhythm/idl/video/videoPb"
-	"ByteRhythm/mq"
+	"Tiktok/app/video/service"
+	"Tiktok/consts"
+	"Tiktok/idl/video/videoPb"
+	"Tiktok/mq"
 	"context"
 	"encoding/json"
 )

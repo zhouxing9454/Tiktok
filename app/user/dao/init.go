@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm/schema"
 	"time"
 
-	"ByteRhythm/config"
+	"Tiktok/config"
 )
 
 var db *gorm.DB

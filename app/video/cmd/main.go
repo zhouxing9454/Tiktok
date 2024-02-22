@@ -1,13 +1,13 @@
 package main
 
 import (
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/app/video/dao"
-	"ByteRhythm/app/video/script"
-	"ByteRhythm/app/video/service"
-	"ByteRhythm/config"
-	"ByteRhythm/idl/video/videoPb"
-	"ByteRhythm/mq"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/app/video/dao"
+	"Tiktok/app/video/script"
+	"Tiktok/app/video/service"
+	"Tiktok/config"
+	"Tiktok/idl/video/videoPb"
+	"Tiktok/mq"
 	"context"
 	"fmt"
 	"os"

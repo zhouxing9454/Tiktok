@@ -1,12 +1,12 @@
 package service
 
 import (
-	"ByteRhythm/app/user/dao"
-	"ByteRhythm/config"
-	"ByteRhythm/idl/user/userPb"
-	"ByteRhythm/model"
+	"Tiktok/app/user/dao"
+	"Tiktok/config"
+	"Tiktok/idl/user/userPb"
+	"Tiktok/model"
 
-	"ByteRhythm/util"
+	"Tiktok/util"
 	"context"
 	"sync"
 )

@@ -1,12 +1,12 @@
 package rpc
 
 import (
-	"ByteRhythm/idl/comment/commentPb"
-	"ByteRhythm/idl/favorite/favoritePb"
-	"ByteRhythm/idl/message/messagePb"
-	"ByteRhythm/idl/relation/relationPb"
-	"ByteRhythm/idl/user/userPb"
-	"ByteRhythm/idl/video/videoPb"
+	"Tiktok/idl/comment/commentPb"
+	"Tiktok/idl/favorite/favoritePb"
+	"Tiktok/idl/message/messagePb"
+	"Tiktok/idl/relation/relationPb"
+	"Tiktok/idl/user/userPb"
+	"Tiktok/idl/video/videoPb"
 
 	"go-micro.dev/v4"
 )

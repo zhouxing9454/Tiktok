@@ -1,11 +1,11 @@
 package service
 
 import (
-	"ByteRhythm/app/relation/dao"
-	"ByteRhythm/idl/relation/relationPb"
-	"ByteRhythm/idl/video/videoPb"
-	"ByteRhythm/model"
-	"ByteRhythm/util"
+	"Tiktok/app/relation/dao"
+	"Tiktok/idl/relation/relationPb"
+	"Tiktok/idl/video/videoPb"
+	"Tiktok/model"
+	"Tiktok/util"
 	"context"
 	"encoding/json"
 	"fmt"

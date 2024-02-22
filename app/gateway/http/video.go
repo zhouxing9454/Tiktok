@@ -1,10 +1,10 @@
 package http
 
 import (
-	"ByteRhythm/app/gateway/rpc"
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/idl/video/videoPb"
-	"ByteRhythm/util"
+	"Tiktok/app/gateway/rpc"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/idl/video/videoPb"
+	"Tiktok/util"
 	"bytes"
 	"io"
 	"net/http"

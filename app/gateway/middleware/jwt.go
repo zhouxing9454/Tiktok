@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"ByteRhythm/util"
+	"Tiktok/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

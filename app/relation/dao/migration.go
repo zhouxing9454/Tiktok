@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"ByteRhythm/model"
+	"Tiktok/model"
 	"log"
 )
 

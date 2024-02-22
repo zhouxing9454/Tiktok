@@ -1,7 +1,7 @@
 package util
 
 import (
-	"ByteRhythm/config"
+	"Tiktok/config"
 	"bytes"
 	"context"
 	"fmt"

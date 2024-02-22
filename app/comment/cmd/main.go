@@ -1,11 +1,11 @@
 package main
 
 import (
-	"ByteRhythm/app/comment/dao"
-	"ByteRhythm/app/comment/service"
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/config"
-	"ByteRhythm/idl/comment/commentPb"
+	"Tiktok/app/comment/dao"
+	"Tiktok/app/comment/service"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/config"
+	"Tiktok/idl/comment/commentPb"
 	"fmt"
 	"os"
 

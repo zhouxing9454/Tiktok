@@ -1,10 +1,10 @@
 package http
 
 import (
-	"ByteRhythm/app/gateway/rpc"
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/idl/message/messagePb"
-	"ByteRhythm/util"
+	"Tiktok/app/gateway/rpc"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/idl/message/messagePb"
+	"Tiktok/util"
 	"github.com/afex/hystrix-go/hystrix"
 	"github.com/gin-gonic/gin"
 	"net/http"

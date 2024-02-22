@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"ByteRhythm/config"
+	"Tiktok/config"
 	"context"
 	"fmt"
 	"time"

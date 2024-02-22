@@ -1,12 +1,12 @@
 package service
 
 import (
-	"ByteRhythm/app/video/dao"
-	"ByteRhythm/consts"
-	"ByteRhythm/idl/video/videoPb"
-	"ByteRhythm/model"
-	"ByteRhythm/mq"
-	"ByteRhythm/util"
+	"Tiktok/app/video/dao"
+	"Tiktok/consts"
+	"Tiktok/idl/video/videoPb"
+	"Tiktok/model"
+	"Tiktok/mq"
+	"Tiktok/util"
 	"context"
 	"encoding/json"
 	"fmt"

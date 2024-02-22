@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"ByteRhythm/idl/user/userPb"
+	"Tiktok/idl/user/userPb"
 	"context"
 )
 

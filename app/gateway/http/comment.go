@@ -1,10 +1,10 @@
 package http
 
 import (
-	"ByteRhythm/app/gateway/rpc"
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/idl/comment/commentPb"
-	"ByteRhythm/util"
+	"Tiktok/app/gateway/rpc"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/idl/comment/commentPb"
+	"Tiktok/util"
 	"github.com/afex/hystrix-go/hystrix"
 	"net/http"
 	"strconv"

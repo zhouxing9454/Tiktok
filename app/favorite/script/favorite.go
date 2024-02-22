@@ -1,9 +1,9 @@
 package script
 
 import (
-	"ByteRhythm/app/favorite/service"
-	"ByteRhythm/idl/favorite/favoritePb"
-	"ByteRhythm/mq"
+	"Tiktok/app/favorite/service"
+	"Tiktok/idl/favorite/favoritePb"
+	"Tiktok/mq"
 	"context"
 	"encoding/json"
 )

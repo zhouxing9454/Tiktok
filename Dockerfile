@@ -73,7 +73,7 @@ RUN wget https://github.com/etcd-io/etcd/releases/download/v3.5.9/etcd-v3.5.9-li
 RUN wget -c https://github.com/jaegertracing/jaeger/releases/download/v1.48.0/jaeger-1.48.0-linux-amd64.tar.gz &&\
     tar -zxvf jaeger-1.48.0-linux-amd64.tar.gz &&\
 	cd jaeger-1.48.0-linux-amd64 &&\
-    chmod a+x jaeger-* &&\ 
+    chmod a+x jaeger-* &&\
     mv ./jaeger-* /usr/local/bin/
     # nohup ./jaeger-all-in-one --collector.zipkin.host-port=:9411 &
 

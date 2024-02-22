@@ -13,7 +13,7 @@ import (
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 
-	"ByteRhythm/config"
+	"Tiktok/config"
 )
 
 var db *gorm.DB

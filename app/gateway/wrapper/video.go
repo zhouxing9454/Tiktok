@@ -1,7 +1,7 @@
 package wrapper
 
 import (
-	"ByteRhythm/idl/video/videoPb"
+	"Tiktok/idl/video/videoPb"
 	"strconv"
 
 	"github.com/afex/hystrix-go/hystrix"

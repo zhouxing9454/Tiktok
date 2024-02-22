@@ -1,13 +1,13 @@
 package main
 
 import (
-	"ByteRhythm/app/favorite/dao"
-	"ByteRhythm/app/favorite/script"
-	"ByteRhythm/app/favorite/service"
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/config"
-	"ByteRhythm/idl/favorite/favoritePb"
-	"ByteRhythm/mq"
+	"Tiktok/app/favorite/dao"
+	"Tiktok/app/favorite/script"
+	"Tiktok/app/favorite/service"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/config"
+	"Tiktok/idl/favorite/favoritePb"
+	"Tiktok/mq"
 	"context"
 	"fmt"
 	"os"

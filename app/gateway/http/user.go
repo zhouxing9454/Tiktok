@@ -1,10 +1,10 @@
 package http
 
 import (
-	"ByteRhythm/app/gateway/rpc"
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/idl/user/userPb"
-	"ByteRhythm/util"
+	"Tiktok/app/gateway/rpc"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/idl/user/userPb"
+	"Tiktok/util"
 	"net/http"
 	"strconv"
 

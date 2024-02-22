@@ -1,9 +1,9 @@
 package main
 
 import (
-	"ByteRhythm/app/gateway/router"
-	"ByteRhythm/app/gateway/rpc"
-	"ByteRhythm/config"
+	"Tiktok/app/gateway/router"
+	"Tiktok/app/gateway/rpc"
+	"Tiktok/config"
 	"fmt"
 	"time"
 

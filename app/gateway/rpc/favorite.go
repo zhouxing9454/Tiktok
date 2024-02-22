@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"ByteRhythm/idl/favorite/favoritePb"
+	"Tiktok/idl/favorite/favoritePb"
 	"context"
 )
 

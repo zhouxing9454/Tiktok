@@ -1,11 +1,11 @@
 package main
 
 import (
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/app/user/dao"
-	"ByteRhythm/app/user/service"
-	"ByteRhythm/config"
-	"ByteRhythm/idl/user/userPb"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/app/user/dao"
+	"Tiktok/app/user/service"
+	"Tiktok/config"
+	"Tiktok/idl/user/userPb"
 	"fmt"
 	"os"
 

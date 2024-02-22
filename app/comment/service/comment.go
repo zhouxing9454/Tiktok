@@ -1,11 +1,11 @@
 package service
 
 import (
-	"ByteRhythm/app/comment/dao"
-	"ByteRhythm/idl/comment/commentPb"
-	"ByteRhythm/idl/favorite/favoritePb"
-	"ByteRhythm/model"
-	"ByteRhythm/util"
+	"Tiktok/app/comment/dao"
+	"Tiktok/idl/comment/commentPb"
+	"Tiktok/idl/favorite/favoritePb"
+	"Tiktok/model"
+	"Tiktok/util"
 	"context"
 	"encoding/json"
 	"fmt"

@@ -1,7 +1,7 @@
 package mq
 
 import (
-	"ByteRhythm/config"
+	"Tiktok/config"
 	"fmt"
 
 	"github.com/streadway/amqp"

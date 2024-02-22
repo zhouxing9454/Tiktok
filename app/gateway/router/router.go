@@ -1,10 +1,10 @@
 package router
 
 import (
-	"ByteRhythm/app/gateway/http"
-	"ByteRhythm/app/gateway/middleware"
-	"ByteRhythm/app/gateway/wrapper"
-	"ByteRhythm/config"
+	"Tiktok/app/gateway/http"
+	"Tiktok/app/gateway/middleware"
+	"Tiktok/app/gateway/wrapper"
+	"Tiktok/config"
 	"fmt"
 
 	"github.com/gin-contrib/cors"

@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"ByteRhythm/model"
-	"ByteRhythm/util"
+	"Tiktok/model"
+	"Tiktok/util"
 	"context"
 	"time"
 
