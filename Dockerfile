@@ -1,50 +1,109 @@
-# 这行设置基础镜像为golang:alpine，并将构建阶段命名为"builder"。golang:alpine镜像是一个轻量级镜像，包含了Go编程语言。
-FROM golang:alpine AS builder
+#第一阶段
+FROM ubuntu:20.04 as builder
+## 设置时区
+RUN apt-get -y update && DEBIAN_FRONTEND="noninteractive" apt -y install tzdata
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# 这行为构建阶段添加一个标签，指示它是"gobuilder"阶段。
-LABEL stage=gobuilder
+WORKDIR /workspace
 
-# 这些行设置环境变量。CGO_ENABLED设置为0以禁用CGO（C Go）支持，GOPROXY设置为https://goproxy.cn,direct以使用Go模块代理。
-ENV CGO_ENABLED 0
-ENV GOPROXY https://goproxy.cn,direct
+COPY . .
 
-# 这行将默认的Alpine Linux仓库URL替换为Aliyun的镜像地址。这样做是为了提高中国用户的软件包下载速度。
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+ENV GO111MODULE=on \
+    GOPROXY=https://goproxy.cn,direct
 
-# 这行更新Alpine的软件包索引并安装tzdata和bash软件包。tzdata用于设置时区，bash是一个常用的Shell解释器。
-RUN apk update --no-cache && apk add --no-cache tzdata bash
+## 安装go1.20.7  
+RUN apt install -y wget      
+RUN wget https://go.dev/dl/go1.20.7.linux-amd64.tar.gz &&\
+    tar -C /usr/local -xzf go1.20.7.linux-amd64.tar.gz &&\
+    ## 软链接
+    ln -s /usr/local/go/bin/* /usr/bin/
+# 配置ffmpeg环境
+RUN apt-get  install -y autoconf automake build-essential libass-dev libfreetype6-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev
+RUN apt install -y libavdevice-dev libavfilter-dev libswscale-dev libavcodec-dev libavformat-dev libswresample-dev libavutil-dev
+RUN apt-get install -y yasm
+    # 设置环境变量
+ENV FFMPEG_ROOT=$HOME/ffmpeg \
+    CGO_LDFLAGS="-L$FFMPEG_ROOT/lib/ -lavcodec -lavformat -lavutil -lswscale -lswresample -lavdevice -lavfilter" \
+    CGO_CFLAGS="-I$FFMPEG_ROOT/include" \
+    LD_LIBRARY_PATH=$HOME/ffmpeg/lib
 
-# 这行设置工作目录为/build，并将当前目录中的文件复制到容器的/build目录中。
-WORKDIR /build
-COPY ../../ .
 
-# 这行使用go mod命令下载依赖项模块。
 RUN go mod download
 
-# 这行使用go build命令编译Go应用程序，并使用-ldflags="-s -w"参数设置链接标志，以进行静态编译。编译后的二进制文件将被复制到/app/server路径下。
-RUN go build -ldflags="-s -w" -o /app/server
+RUN chmod +x build.sh && ./build.sh
 
-
-# 这行设置基础镜像为alpine。
-FROM alpine
-
-# 这些行从之前的构建阶段中复制证书和时区信息到当前镜像中，并通过设置TZ环境变量将时区设置为"Asia/Shanghai"。
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
-ENV TZ Asia/Shanghai
-
-# 这行指定容器将监听的端口号为8000。（暴露端口）
-EXPOSE 8000
-
-#  这些行设置工作目录为/app，并从之前的构建阶段中复制敏感词文件、应用程序二进制文件以及静态文件到容器的相应路径中。
+#第二阶段
+FROM ubuntu:20.04 AS production
 WORKDIR /app
-COPY --from=builder /build/utils/sensitiveWords.txt /app/server/utils/sensitiveWords.txt
-COPY --from=builder /app/server /app/webserver
-COPY --from=builder /build/static/ /app/server/static/
 
-# 这两行安装了curl和ffmpeg软件包，使用--no-cache选项表示不缓存安装包。
-RUN apk add --no-cache curl
-RUN apk add --no-cache ffmpeg
+## 设置时区
+RUN apt-get -y update && DEBIAN_FRONTEND="noninteractive" apt -y install tzdata
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# 这行设置容器启动时执行的命令，即运行webserver可执行文件。
-CMD ["./webserver"]
+COPY ./*.sh  .
+
+#本机目录不能使用绝对路径，因为它本身就是一个相对路径
+#只会复制本机的config目录下所有文件，而不会创建config目录，所以后面需要指定
+COPY ./config ./config 
+# COPY . .
+RUN mkdir -p ./app/video/tmp/
+RUN apt install -y wget systemctl
+
+# 配置ffmpeg环境
+RUN apt-get  install -y autoconf automake build-essential libass-dev libfreetype6-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev
+RUN apt install -y libavdevice-dev libavfilter-dev libswscale-dev libavcodec-dev libavformat-dev libswresample-dev libavutil-dev
+RUN apt-get install -y yasm
+    # 设置环境变量
+ENV FFMPEG_ROOT=$HOME/ffmpeg \
+    CGO_LDFLAGS="-L$FFMPEG_ROOT/lib/ -lavcodec -lavformat -lavutil -lswscale -lswresample -lavdevice -lavfilter" \
+    CGO_CFLAGS="-I$FFMPEG_ROOT/include" \
+    LD_LIBRARY_PATH=$HOME/ffmpeg/lib
+
+## 安装 etcd v3.5.9
+RUN wget https://github.com/etcd-io/etcd/releases/download/v3.5.9/etcd-v3.5.9-linux-amd64.tar.gz &&\
+    tar -zxvf etcd-v3.5.9-linux-amd64.tar.gz &&\
+    cd etcd-v3.5.9-linux-amd64 &&\
+    chmod +x etcd  &&\
+    mv ./etcd* /usr/local/bin/
+
+
+## 安装 Jaeger v3.5.9
+RUN wget -c https://github.com/jaegertracing/jaeger/releases/download/v1.48.0/jaeger-1.48.0-linux-amd64.tar.gz &&\
+    tar -zxvf jaeger-1.48.0-linux-amd64.tar.gz &&\
+	cd jaeger-1.48.0-linux-amd64 &&\
+    chmod a+x jaeger-* &&\ 
+    mv ./jaeger-* /usr/local/bin/
+    # nohup ./jaeger-all-in-one --collector.zipkin.host-port=:9411 &
+
+## 安装 RabbitMQ 
+### 导入 RabbitMQ 的存储库密钥
+RUN wget -O- https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc | apt-key add -
+### 将存储库添加到系统
+RUN apt-get install -y apt-transport-https &&\
+    cho "deb https://dl.bintray.com/rabbitmq-erlang/debian focal erlang" | tee /etc/apt/sources.list.d/bintray.erlang.list &&\
+    echo "deb https://dl.bintray.com/rabbitmq/debian focal main" | tee /etc/apt/sources.list.d/bintray.rabbitmq.list 
+### 安装 RabbitMQ 和 Erlang
+RUN apt-get install -y rabbitmq-server
+
+## 安装 注意：Redis安装会自动启动
+RUN apt install -y redis-server 
+
+
+COPY --from=builder /workspace/gateway .
+COPY --from=builder /workspace/user .
+COPY --from=builder /workspace/video .
+COPY --from=builder /workspace/relation .
+COPY --from=builder /workspace/favorite .
+COPY --from=builder /workspace/comment .
+COPY --from=builder /workspace/message .
+EXPOSE 8080 16686
+
+# RUN chmod +x /app/run.sh 等效下面语句
+RUN cd /app &&chmod +x start.sh
+CMD ["/app/start.sh"]
+
+
+## docker build -t david945/byterhythm:v2.1 .
+## docker run -it -p 8080:8080/tcp -p 16686:16686/tcp --name byterhythm david945/byterhythm:v2.1
