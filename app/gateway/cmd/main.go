@@ -23,9 +23,10 @@ func main() {
 	webService := web.NewService(
 		web.Name("HttpService"), // 微服务名字
 		web.Address(fmt.Sprintf("%s:%s", config.HttpHost, config.HttpPort)),
-		web.Registry(etcdReg),           // etcd注册件
-		web.Handler(router.NewRouter()), // 路由
-		web.RegisterTTL(time.Second*30), // 服务注册时间
+		web.Registry(etcdReg),                // etcd注册件
+		web.Handler(router.NewRouter()),      // 路由
+		web.RegisterTTL(time.Second*30),      // 设置注册超时时间
+		web.RegisterInterval(time.Second*15), // 设置重新注册时间间隔
 		web.Metadata(map[string]string{"protocol": "http"}),
 	)
 

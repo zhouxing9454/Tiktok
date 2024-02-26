@@ -11,6 +11,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/go-micro/plugins/v4/registry/etcd"
 	ratelimit "github.com/go-micro/plugins/v4/wrapper/ratelimiter/uber"
@@ -50,6 +51,8 @@ func main() {
 		micro.WrapClient(roundrobin.NewClientWrapper()),          // 负载均衡
 		micro.WrapHandler(opentracing.NewHandlerWrapper(tracer)), // 链路追踪
 		micro.WrapClient(opentracing.NewClientWrapper(tracer)),   // 链路追踪
+		micro.RegisterTTL(time.Second*30),                        // 设置注册超时时间
+		micro.RegisterInterval(time.Second*15),                   // 设置重新注册时间间隔
 	)
 
 	// 结构命令行参数，初始化
