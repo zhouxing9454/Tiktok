@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"sync"
 	"time"
 
@@ -190,11 +191,15 @@ func BuildUserPbModel(ctx context.Context, user *model.User, token string) *vide
 }
 
 func BuildVideoModel(uid int, VideoUrl string, coverUrl string, title string) model.Video {
+	//if uid == -1 {
+	//	uid = 1
+	//}
 	return model.Video{
-		AuthorID: uid,
-		PlayUrl:  VideoUrl,
-		CoverUrl: coverUrl,
-		Title:    title,
+		AuthorID:  uid,
+		PlayUrl:   VideoUrl,
+		CoverUrl:  coverUrl,
+		Title:     title,
+		CreatedAt: time.Unix(time.Now().Unix(), 0),
 	}
 }
 
@@ -204,9 +209,15 @@ func VideoMQ2DB(ctx context.Context, req *videoPb.PublishRequest) error {
 	title := req.Title
 	uid, _ := util.GetUserIdFromToken(token)
 	VideoUrl, _ := util.UploadVideo(data)
-	imgPath := util.VideoGetNetImgCount(1, VideoUrl)
-	coverUrl := util.UploadJPG(imgPath, VideoUrl)
-	os.Remove(imgPath)
+	fileName := fmt.Sprintf("./app/video/tmp/" + util.NewFileName(int64(uid)) + "_cover.jpg")
+	cmd := exec.Command("ffmpeg", "-i", VideoUrl, "-frames:v", "1", fileName)
+	_ = cmd.Run()
+	//fmt.Println(err)
+	//if err != nil {
+	//	return err
+	//}
+	coverUrl := util.UploadJPG(fileName, VideoUrl)
+	os.Remove(fileName)
 	video := BuildVideoModel(uid, VideoUrl, coverUrl, title)
 	//将视频存入数据库
 	if err := dao.NewVideoDao(ctx).CreateVideo(&video); err != nil {
@@ -225,3 +236,10 @@ func VideoMQ2Redis(ctx context.Context, req *videoPb.Video) error {
 	dao.RedisClient.Set(ctx, fmt.Sprintf("%d", req.Id), videoJson, time.Hour)
 	return nil
 }
+
+//imgPath := util.VideoGetNetImgCount(1, VideoUrl)
+//VideoName := util.NewFileName(int64(uid))
+//filename := VideoName + ".mp4"
+//savePath := filepath.Join("/app/video/tmp/", filename)
+//pictureName := VideoName + ".jpg"
+//savePath2 := filepath.Join("/app/video/tmp/", pictureName)

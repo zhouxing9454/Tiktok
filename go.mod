@@ -10,7 +10,6 @@ require (
 	github.com/feiin/sensitivewords v0.0.0-20231115031023-58bbe2fac957
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.1
-	github.com/giorgisio/goav v0.1.0
 	github.com/go-micro/plugins/v4/registry/etcd v1.2.0
 	github.com/go-micro/plugins/v4/wrapper/ratelimiter/uber v1.2.0
 	github.com/go-micro/plugins/v4/wrapper/select/roundrobin v1.2.0

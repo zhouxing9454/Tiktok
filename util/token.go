@@ -23,37 +23,37 @@ type MyCustomClaims struct {
 }
 
 // RefreshToken update expireAt and return a new token
-func RefreshToken(tokenString string) (string, error) {
-	// first get previous token
-	token, err := jwt.ParseWithClaims(
-		tokenString,
-		&MyCustomClaims{},
-		func(token *jwt.Token) (interface{}, error) {
-			return []byte(KEY), nil
-		})
-	claims, ok := token.Claims.(*MyCustomClaims)
-	if !ok || !token.Valid {
-		return "", err
-	}
-	mySigningKey := []byte(KEY)
-	expireAt := time.Now().Add(time.Second * time.Duration(DefaultExpireSeconds)).Unix()
-	newClaims := MyCustomClaims{
-		claims.User,
-		jwt.StandardClaims{
-			ExpiresAt: expireAt,
-			Issuer:    claims.User.Username,
-			IssuedAt:  time.Now().Unix(),
-		},
-	}
-	// generate new token with new claims
-	newToken := jwt.NewWithClaims(jwt.SigningMethodHS256, newClaims)
-	tokenStr, err := newToken.SignedString(mySigningKey)
-	if err != nil {
-		fmt.Println("generate new fresh json web token failed !! error :", err)
-		return "", err
-	}
-	return tokenStr, err
-}
+//func RefreshToken(tokenString string) (string, error) {
+//	// first get previous token
+//	token, err := jwt.ParseWithClaims(
+//		tokenString,
+//		&MyCustomClaims{},
+//		func(token *jwt.Token) (interface{}, error) {
+//			return []byte(KEY), nil
+//		})
+//	claims, ok := token.Claims.(*MyCustomClaims)
+//	if !ok || !token.Valid {
+//		return "", err
+//	}
+//	mySigningKey := []byte(KEY)
+//	expireAt := time.Now().Add(time.Second * time.Duration(DefaultExpireSeconds)).Unix()
+//	newClaims := MyCustomClaims{
+//		claims.User,
+//		jwt.StandardClaims{
+//			ExpiresAt: expireAt,
+//			Issuer:    claims.User.Username,
+//			IssuedAt:  time.Now().Unix(),
+//		},
+//	}
+//	// generate new token with new claims
+//	newToken := jwt.NewWithClaims(jwt.SigningMethodHS256, newClaims)
+//	tokenStr, err := newToken.SignedString(mySigningKey)
+//	if err != nil {
+//		fmt.Println("generate new fresh json web token failed !! error :", err)
+//		return "", err
+//	}
+//	return tokenStr, err
+//}
 
 func ValidateToken(tokenString string) error {
 	token, err := jwt.ParseWithClaims(
@@ -103,25 +103,25 @@ func GenerateToken(user *model.User, expiredSeconds int) (tokenString string) {
 
 }
 
-func GetUsernameFromToken(tokenString string) (string, error) {
-	token, err := jwt.ParseWithClaims(
-		tokenString,
-		&MyCustomClaims{},
-		func(token *jwt.Token) (interface{}, error) {
-			return []byte(KEY), nil
-		})
-
-	if err != nil {
-		return "", err
-	}
-
-	claims, ok := token.Claims.(*MyCustomClaims)
-	if !ok || !token.Valid {
-		return "", fmt.Errorf("invalid token")
-	}
-
-	return claims.User.Username, nil
-}
+//func GetUsernameFromToken(tokenString string) (string, error) {
+//	token, err := jwt.ParseWithClaims(
+//		tokenString,
+//		&MyCustomClaims{},
+//		func(token *jwt.Token) (interface{}, error) {
+//			return []byte(KEY), nil
+//		})
+//
+//	if err != nil {
+//		return "", err
+//	}
+//
+//	claims, ok := token.Claims.(*MyCustomClaims)
+//	if !ok || !token.Valid {
+//		return "", fmt.Errorf("invalid token")
+//	}
+//
+//	return claims.User.Username, nil
+//}
 
 func GetUserFromToken(tokenString string) (*model.User, error) {
 	token, err := jwt.ParseWithClaims(

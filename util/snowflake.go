@@ -2,6 +2,7 @@ package util
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 	"time"
 )
@@ -55,4 +56,11 @@ func (w *Worker) NextId() int64 {
 	//ID由时间戳、机器编码、序列号组成
 	ID := (now-epoch)<<timeShift | (w.workerId << workerShift) | (w.number)
 	return ID
+}
+
+// NewFileName 根据UserID+雪花算法生成的id连接成videoName
+func NewFileName(userID int64) string {
+	node, _ := NewWorker(1)
+	randomID := node.NextId()
+	return fmt.Sprintf("%d-%d", userID, randomID)
 }
